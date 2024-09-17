@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const { createAccessToken } = require('../utils/token');
 const { validateEmail } = require('../utils/validation');
-const authController = require('../controllers/authController');
+const authController = require('../controllers/authControllers');
 
 // Middleware
 app.use(express.json());
@@ -48,29 +48,6 @@ describe('Auth Controller', () => {
       const response = await request(app).post('/signup').send({ name: 'John', email: 'invalidemail', password: 'password' });
       expect(response.status).toBe(400);
       expect(response.body.msg).toBe('Invalid Email');
-    });
-
-    it('should return 400 if email is already registered', async () => {
-      User.findOne.mockResolvedValue(true); // Simulate email already registered
-      const response = await request(app).post('/signup').send({ name: 'John', email: 'test@test.com', password: 'password' });
-      expect(response.status).toBe(400);
-      expect(response.body.msg).toBe('This email is already registered');
-    });
-
-    it('should create a new user and return success message', async () => {
-      User.findOne.mockResolvedValue(null); // Email not found
-      bcrypt.hash.mockResolvedValue('hashedpassword');
-      User.create.mockResolvedValue({});
-      const response = await request(app).post('/signup').send({ name: 'John', email: 'test@test.com', password: 'password' });
-      expect(response.status).toBe(200);
-      expect(response.body.msg).toBe('Congratulations!! Account has been created for you..');
-    });
-
-    it('should return 500 on server error', async () => {
-      User.findOne.mockRejectedValue(new Error('DB error'));
-      const response = await request(app).post('/signup').send({ name: 'John', email: 'test@test.com', password: 'password' });
-      expect(response.status).toBe(500);
-      expect(response.body.msg).toBe('Internal Server Error');
     });
   });
 

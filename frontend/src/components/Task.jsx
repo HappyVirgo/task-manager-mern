@@ -15,7 +15,7 @@ const Task = ({task, handleDelete, index}) => {
                 </Tooltip>
 
                 <Tooltip text={"Delete this task"} position={"top"}>
-                    <span className='text-red-500 cursor-pointer' onClick={() => handleDelete(task._id)}>
+                    <span role='button' name='delete' className='text-red-500 cursor-pointer' onClick={() => handleDelete(task._id)}>
                         <i className="fa-solid fa-trash"></i>
                     </span>
                 </Tooltip>

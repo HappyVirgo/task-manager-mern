@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const Task = require('../models/Task');
 const { validateObjectId } = require('../utils/validation');
-const taskController = require('../controllers/taskController');
+const taskController = require('../controllers/taskControllers');
 
 // Middleware for testing purposes
 app.use(express.json());
